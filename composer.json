@@ -26,8 +26,8 @@
         "predis/predis": "^3.4"
     },
     "suggest": {
-        "crunzphp/crunz": "Required to use the Crunz integration (CrunzScheduler, CrunzStore)",
-        "laravel/framework": "Required to use the Laravel integration (LaravelScheduler, LaravelMutex)",
+        "crunzphp/crunz": "Required to use the Crunz integration (CrunzScheduler)",
+        "laravel/framework": "Required to use the Laravel integration (LaravelScheduler)",
         "symfony/lock": "Required to use the Symfony lock provider (SymfonyLockProvider)"
     }
 }

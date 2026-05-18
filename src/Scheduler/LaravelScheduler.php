@@ -19,10 +19,11 @@ use Override;
  * - Set up a cron entry to execute the Laravel command as per Laravel documentation.
  * - Create a service provider in your Laravel application.
  * - Initialize this scheduler with the create method in ServiceProvider::register.
- * - Then you can pass this scheduler to your application
- *     which can use it via the library-agnostic Scheduler interface.
+ * - You can pass this scheduler to your application
+ *     in the ServiceProvider::boot method
+ *     and use it via the library-agnostic Scheduler interface.
  *
- * See examples/crunz/ for a demonstration of how this can be set up.
+ * See examples/laravel/ for a demonstration of how this can be set up.
  */
 final readonly class LaravelScheduler implements Scheduler {
     public function __construct (

@@ -19,8 +19,10 @@ use Symfony\Component\Lock\PersistingStoreInterface;
  *     and give it a directory for the task definition files.
  * - Initialize this scheduler with the create method in one of those
  *     task definition files.
- * - Then you can pass this scheduler to your application
- *     which can use it via the library-agnostic Scheduler interface.
+ * - You can pass this scheduler to your application
+ *     and use it via the library-agnostic Scheduler interface.
+ * - Make sure to return the underlying Crunz schedule (getSchedule)
+ *     from the definition file.
  *
  * See examples/crunz/ for a demonstration of how this can be set up.
  */
