@@ -3,7 +3,7 @@
 namespace Egst\EmorfiqScheduler;
 
 use DateTimeZone;
-use Egst\EmorfiqScheduler\Store\SharedStore;
+use Egst\EmorfiqScheduler\Locking\Store\SharedStore;
 
 /**
  * Common configuration without any library-specific dependencies.

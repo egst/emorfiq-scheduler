@@ -8,8 +8,10 @@ use Egst\EmorfiqScheduler\CronExpression;
 use Egst\EmorfiqScheduler\Scheduler;
 use Egst\EmorfiqScheduler\SchedulerConfig;
 use Egst\EmorfiqScheduler\Job;
+use Egst\EmorfiqScheduler\Locking\Store\PdoStore;
 use Egst\EmorfiqScheduler\Locking\SymfonyLock\SymfonyLockProvider;
 use Illuminate\Contracts\Config\Repository as Config;
+use PDO;
 use Predis\Client as PredisClient;
 use Symfony\Component\Lock\Store\RedisStore;
 
@@ -25,12 +27,14 @@ final class SchedulerSetup {
         private PredisClient $redisClient,
         private ReportGenerator $reportGenerator,
         private FooSync $fooSync,
+        private PDO $pdo,
     ) {}
 
     public function getConfig (): SchedulerConfig {
         return new SchedulerConfig(
-            timeZone:     new \DateTimeZone($this->config->get('app.timezone')),
-            ownedLocking: new SymfonyLockProvider(new RedisStore($this->redisClient)),
+            timeZone:      new \DateTimeZone($this->config->get('app.timezone')),
+            sharedLocking: new PdoStore($this->pdo),
+            ownedLocking:  new SymfonyLockProvider(new RedisStore($this->redisClient)),
         );
     }
 

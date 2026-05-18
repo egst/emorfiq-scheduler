@@ -3,7 +3,7 @@
 namespace Egst\EmorfiqScheduler\Bridge\LaravelScheduler;
 
 use DateTimeInterface;
-use Egst\EmorfiqScheduler\Store\SharedStore;
+use Egst\EmorfiqScheduler\Locking\Store\SharedStore;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\EventMutex;
 use Illuminate\Console\Scheduling\SchedulingMutex;

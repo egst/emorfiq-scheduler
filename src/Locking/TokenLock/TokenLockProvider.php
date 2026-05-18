@@ -12,7 +12,7 @@ use Override;
  *
  * The corresponding lock handle holds the ownership token.
  */
-final readonly class SessionLockProvider implements LockProvider {
+final readonly class TokenLockProvider implements LockProvider {
 
     public function __construct (
         private TokenStore $store
