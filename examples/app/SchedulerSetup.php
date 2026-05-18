@@ -4,6 +4,7 @@ namespace App;
 
 use App\Integration\Foo\FooSync;
 use App\Reporting\ReportGenerator;
+use DateTimeZone;
 use Egst\EmorfiqScheduler\CronExpression;
 use Egst\EmorfiqScheduler\Scheduler;
 use Egst\EmorfiqScheduler\SchedulerConfig;
@@ -22,6 +23,7 @@ use Symfony\Component\Lock\Store\RedisStore;
  * your library-agnostic application code.
  */
 final class SchedulerSetup {
+
     public function __construct(
         private Config $config,
         private PredisClient $redisClient,
@@ -32,7 +34,7 @@ final class SchedulerSetup {
 
     public function getConfig (): SchedulerConfig {
         return new SchedulerConfig(
-            timeZone:      new \DateTimeZone($this->config->get('app.timezone')),
+            timeZone:      new DateTimeZone($this->config->get('app.timezone')),
             sharedLocking: new PdoStore($this->pdo),
             ownedLocking:  new SymfonyLockProvider(new RedisStore($this->redisClient)),
         );
@@ -43,12 +45,12 @@ final class SchedulerSetup {
             ->addJob(new Job(
                 'hello-world',
                 new CronExpression('0 * * * *'),
-                static fn () => print('Hello world!' . PHP_EOL),
+                static function () { print('Hello world!' . PHP_EOL); },
             ))
             ->addJob(new Job(
                 'backup',
                 new CronExpression('0 * * * *'),
-                static fn () => exec('cp -r data/ data_backup/'),
+                static function () { exec('cp -r data/ data_backup/'); },
             ))
             ->addJob(new Job(
                 'generate-report',
@@ -60,4 +62,5 @@ final class SchedulerSetup {
             // to find job definition classes in your codebase.
             ->addJob($this->fooSync->getSchedulerTask());
     }
+
 }

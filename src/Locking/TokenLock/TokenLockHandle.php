@@ -11,7 +11,7 @@ use Override;
  * A lock handle representing token-based ownership of a lock.
  *
  * The lock handle holds the ownership token.
- * 
+ *
  * This lock handle is serializable, since the just
  * the string token is needed to represent the ownership.
  */

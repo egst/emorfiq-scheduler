@@ -12,7 +12,7 @@ use Override;
  *
  * When the session ends (e.g. a DB connection), the lock is released. There is no
  * token to store. Only the connection held by the store determines the ownership.
- * 
+ *
  * This lock handle is not serializable, since passing it to another process would
  * mean loosing the connection.
  */

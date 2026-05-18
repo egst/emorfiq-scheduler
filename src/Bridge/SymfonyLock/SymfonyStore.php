@@ -5,7 +5,6 @@ namespace Egst\EmorfiqScheduler\Bridge\SymfonyLock;
 use Egst\EmorfiqScheduler\LockHandle;
 use Egst\EmorfiqScheduler\LockHandleState;
 use Egst\EmorfiqScheduler\LockProvider;
-use InvalidArgumentException;
 use Override;
 use Symfony\Component\Lock\Exception\LockConflictedException;
 use Symfony\Component\Lock\Exception\LockReleasingException;
@@ -64,10 +63,9 @@ final readonly class SymfonyStore implements PersistingStoreInterface {
     private function getHandle (Key $key): ?LockHandle {
         $resource = (string) $key;
         $snapshot = $key->getState(self::class);
-        if ($snapshot instanceof LockHandleState)
+        if (!$snapshot instanceof LockHandleState)
             return null;
-        return $this->provider->restore($resource, $snapshot)
-            ?? throw new InvalidArgumentException('Failed to restore a lock handle.');
+        return $this->provider->restore($resource, $snapshot);
     }
 
 }

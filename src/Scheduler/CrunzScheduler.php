@@ -27,6 +27,7 @@ use Symfony\Component\Lock\PersistingStoreInterface;
  * See examples/crunz/ for a demonstration of how this can be set up.
  */
 final readonly class CrunzScheduler implements Scheduler {
+
     public function __construct (
         private Schedule                  $schedule,
         private DateTimeZone              $timeZone,
@@ -42,36 +43,34 @@ final readonly class CrunzScheduler implements Scheduler {
     public static function create (
         SchedulerConfig $config,
         Schedule        $schedule  = new Schedule,
-        ?float          $lockDelay = null,
+        float           $lockDelay = 300.,
     ): self {
         return new self(
             schedule: $schedule,
             timeZone: $config->timeZone,
-            store: $lockDelay
+            store: $config->ownedLocking !== null
                 ? new SymfonyStore($config->ownedLocking, $lockDelay)
-                : new SymfonyStore($config->ownedLocking)
+                : null
         );
     }
 
     #[Override]
     public function addJob (Job $job): self {
         $event = $this->schedule
-            ->run($job->handler);
-
-        if ($job->overlapLock) {
-            $event->preventOverlapping($this->store);
-        }
-
-        if ($job->minuteLock) {
-            throw new FeatureNotSupported('Distributed locking is not supported by the Crunz scheduler.');
-            # TODO: This could be implemented with the skip method.
-        }
-
-        $event
+            ->run($job->handler)
             ->name($job->name)
-            ->description($job->description)
             ->cron((string) $job->cronExpression)
             ->timezone($this->timeZone);
+
+        if ($job->overlapLock)
+            $event->preventOverlapping($this->store);
+
+        if ($job->minuteLock)
+            throw new FeatureNotSupported('Distributed locking is not supported by the Crunz scheduler.');
+            # TODO: This could be implemented with the skip method.
+
+        if ($job->description !== null)
+            $event->description($job->description);
 
         return $this;
     }
@@ -79,4 +78,5 @@ final readonly class CrunzScheduler implements Scheduler {
     public function getSchedule (): Schedule {
         return $this->schedule;
     }
+
 }

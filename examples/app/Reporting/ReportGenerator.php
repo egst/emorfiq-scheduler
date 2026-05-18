@@ -6,7 +6,9 @@ namespace App\Reporting;
  * Application demo.
  */
 class ReportGenerator {
+
     public function sendReport (): void {
         # ...
     }
+
 }

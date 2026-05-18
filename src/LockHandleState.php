@@ -3,6 +3,7 @@
 namespace Egst\EmorfiqScheduler;
 
 use Egst\EmorfiqScheduler\Exception\LockHandleNotSerializable;
+use InvalidArgumentException;
 
 /**
  * A serializable snapshot of a lock handle's state that preserves the necessary ownership data.
@@ -33,14 +34,17 @@ class LockHandleState {
         return $this->values[$key] ?? null;
     }
 
-    public function __serialize (): string {
+    public function __serialize (): array {
         return $this->serializable
-            ? serialize($this->values)
+            ? $this->values
             : throw new LockHandleNotSerializable;
     }
 
     public function __unserialize (string $data): void {
-        $this->values = unserialize($data);
+        $data = unserialize($data);
+        if (!is_array($data))
+            throw new InvalidArgumentException;
+        $this->values       = $data;
         $this->serializable = true;
     }
 

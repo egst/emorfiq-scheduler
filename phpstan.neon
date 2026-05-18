@@ -1,0 +1,21 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - examples
+    treatPhpDocTypesAsCertain: true
+    reportUnmatchedIgnoredErrors: true
+    checkUninitializedProperties: true
+    checkMissingCallableSignature: true
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    checkBenevolentUnionTypes: true
+    checkImplicitMixed: true
+    checkExplicitMixedMissingReturn: true
+    reportPossiblyNonexistentGeneralArrayOffset: true
+    reportPossiblyNonexistentConstantArrayOffset: true
+    checkAdvancedIsset: true
+    checkArgumentsPassedByReference: true
+    checkDynamicProperties: true
+
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon

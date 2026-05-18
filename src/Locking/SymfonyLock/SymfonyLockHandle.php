@@ -17,7 +17,7 @@ use Symfony\Component\Lock\PersistingStoreInterface;
  * backend to store its implementation-defined state into it as it normally would.
  * This could hold a token or it could represent session-based ownership or
  * anything the given Symfony backend implements.
- * 
+ *
  * It can only be serialized when the underlying Symfony Key is serializable.
  *
  * The Symfony backend's exceptions are discarded. A possible improvement could be

@@ -23,7 +23,9 @@
         "crunzphp/crunz": "^3.9",
         "laravel/framework": "^13.8",
         "symfony/lock": "^7.4",
-        "predis/predis": "^3.4"
+        "predis/predis": "^3.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-strict-rules": "^2.0"
     },
     "suggest": {
         "crunzphp/crunz": "Required to use the Crunz integration (CrunzScheduler)",

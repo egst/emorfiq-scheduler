@@ -10,10 +10,6 @@ use Predis\Client as PredisClient;
  * Application demo.
  */
 class FooSync {
-    public function __construct (
-        private PredisClient $redisClient,
-    ) {
-    }
 
     public function sync (): void {
         # ...
@@ -36,4 +32,5 @@ class FooSync {
             minuteLock: true,
         );
     }
+
 }

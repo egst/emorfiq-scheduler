@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use App\SchedulerSetup;
 use Egst\EmorfiqScheduler\Scheduler;
 use Egst\EmorfiqScheduler\Scheduler\LaravelScheduler;
+use Override;
 
 /**
  * Laravel scheduler adapter setup boilerplate.
@@ -20,14 +21,17 @@ use Egst\EmorfiqScheduler\Scheduler\LaravelScheduler;
  * library-specific dependencies.
  */
 class SchedulerServiceProvider extends ServiceProvider {
+
+    #[Override]
     public function register (): void {
         $config    = $this->app->make(SchedulerSetup::class)->getConfig();
         $scheduler = LaravelScheduler::create($this->app, $config);
-        $this->app->register(Scheduler::class, fn () => $scheduler);
+        $this->app->singleton(Scheduler::class, fn () => $scheduler);
     }
 
     public function boot (): void {
         $scheduler = $this->app->make(Scheduler::class);
         $this->app->make(SchedulerSetup::class)->define($scheduler);
     }
+
 }

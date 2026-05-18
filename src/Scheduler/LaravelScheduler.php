@@ -26,6 +26,7 @@ use Override;
  * See examples/laravel/ for a demonstration of how this can be set up.
  */
 final readonly class LaravelScheduler implements Scheduler {
+
     public function __construct (
         private readonly Schedule     $schedule,
         private readonly DateTimeZone $timeZone,
@@ -36,7 +37,7 @@ final readonly class LaravelScheduler implements Scheduler {
         // This injects the selected locking backend from the given lock provider
         // for Laravel to use in its internal scheduler locking mechanism.
         // Injecting the EventMutex is simpler than using the intended Schedule::useCache method.
-        if ($config->sharedLocking) {
+        if ($config->sharedLocking !== null) {
             $app->singleton(EventMutex::class, fn () => new LaravelMutex($config->sharedLocking));
             $app->singleton(SchedulingMutex::class, fn () => new LaravelMutex($config->sharedLocking));
         }
@@ -49,23 +50,21 @@ final readonly class LaravelScheduler implements Scheduler {
     #[Override]
     public function addJob (Job $job): self {
         $event = $this->schedule
-            ->call($job->handler);
-
-        if ($job->overlapLock) {
-            $event->withoutOverlapping();
-        }
-
-        if ($job->minuteLock) {
-            $event->onOneServer();
-        }
-
-        $event
+            ->call($job->handler)
             ->name($job->name)
-            ->description($job->description)
             ->cron((string) $job->cronExpression)
             ->timezone($this->timeZone);
 
+        if ($job->overlapLock)
+            $event->withoutOverlapping();
+
+        if ($job->minuteLock)
+            $event->onOneServer();
+
+        if ($job->description !== null)
+            $event->description($job->description);
+
         return $this;
     }
-}
 
+}

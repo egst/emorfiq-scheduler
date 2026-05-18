@@ -6,15 +6,16 @@ use Stringable;
 use InvalidArgumentException;
 
 final readonly class CronExpression implements Stringable {
+
     public function __construct (
         private string $expression
     ) {
-        if (!preg_match('/^(\S+\s+){4}\S+$/', $expression)) {
+        if (preg_match('/^(\S+\s+){4}\S+$/', $expression) === false)
             throw new InvalidArgumentException("Invalid cron expression: $expression");
-        }
     }
 
     public function __toString (): string {
         return $this->expression;
     }
+
 }
